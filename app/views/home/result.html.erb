@@ -1,0 +1,55 @@
+
+<div class="content">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8 text-center">
+      <h2>Resultados</h2>
+
+      <div class="mb-1 text-left">
+        <% if result.present? %>
+          <% result.each do |result, key| %>
+            <span><b><%=result %>: &nbsp;&nbsp;</b></span><span><%=key %></span> <br>
+
+          <% end %>
+        <% end %>
+      </div>
+
+      <canvas id="grafica"></canvas>
+
+    </div>
+  </div>
+</div>
+
+<script>
+    // Obtener una referencia al elemento canvas del DOM
+    const $grafica = document.querySelector("#grafica");
+    const labels = <%= raw result.keys if  result.present? %>
+    const data = {
+        labels: labels,
+        datasets: [{
+            base: 0,
+            minBarLength: 2,
+            label: 'Histograma',
+            data: <%= raw result.values if  result.present? %>,
+            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+    };
+
+    new Chart($grafica, config);
+</script>
